@@ -1,0 +1,53 @@
+/* Movimento: só transform/opacity, gatilhos curtos, nada essencial depende disto */
+@keyframes sobe{from{opacity:0;transform:translateY(14px)}}
+@keyframes entra{from{opacity:0;transform:scale(.88) rotate(-5deg)}}
+@keyframes modal{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@keyframes esmaece{from{opacity:0}}
+@keyframes subir{from{transform:translateY(100%)}}
+@keyframes deriva{to{transform:translate3d(4%,6%,0) scale(1.08)}}
+/* entrada da página inicial (CSS puro: se falhar, o conteúdo continua visível) */
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-30% -20%;z-index:-1;background:radial-gradient(40% 50% at 20% 30%,rgba(251,191,20,.28),transparent 70%),radial-gradient(35% 45% at 80% 60%,rgba(255,105,180,.22),transparent 70%);animation:deriva 22s ease-in-out infinite alternate;-webkit-mask-image:linear-gradient(#000 45%,transparent 92%);mask-image:linear-gradient(#000 45%,transparent 92%)}
+.hero-logo{animation:entra .55s cubic-bezier(.2,.7,.2,1) both}
+.hero h1{animation:sobe .45s cubic-bezier(.2,.7,.2,1) .05s both}
+.hero p{animation:sobe .45s cubic-bezier(.2,.7,.2,1) .12s both}
+.hero-acoes{animation:sobe .45s cubic-bezier(.2,.7,.2,1) .2s both}
+.pagina>*{animation:sobe .45s cubic-bezier(.2,.7,.2,1) both}
+.pagina>:nth-child(2){animation-delay:.05s}.pagina>:nth-child(3){animation-delay:.1s}.pagina>:nth-child(n+4){animation-delay:.15s}
+.barra:not([hidden]){animation:subir .4s cubic-bezier(.2,.7,.2,1) .2s both}
+/* revelação na rolagem (classes aplicadas por js/motion.js) */
+.anim .rv{opacity:0;transform:translateY(18px);transition:opacity .5s ease var(--d,0ms),transform .5s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
+.anim .rv.in{opacity:1;transform:none}
+/* cabeçalho */
+.topo{transition:box-shadow .25s ease}
+.topo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--y),var(--p));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.topo.rolou{box-shadow:0 4px 18px rgba(0,0,0,.35)}.topo.rolou::after{transform:scaleX(1)}
+.topo nav a{transition:color .18s ease}
+/* botões */
+.btn{position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+.btn::before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.btn:disabled::before{display:none}
+.btn.rosa::after{display:inline-block;transition:transform .18s ease}
+.btn:active{transform:scale(.97)}
+/* cards e fotos */
+.loja{transition:transform .25s ease,box-shadow .25s ease}
+.loja img{transition:transform .5s ease}
+/* formulários e pop-up */
+dialog input,.escolha select{transition:border-color .18s ease,box-shadow .18s ease}
+dialog input:focus,.escolha select:focus{border-color:var(--pd);box-shadow:0 0 0 3px rgba(228,79,156,.35);outline:2px solid transparent}
+dialog[open]{animation:modal .28s cubic-bezier(.2,.8,.2,1)}
+dialog[open]::backdrop{animation:esmaece .28s ease}
+.erro:not(:empty){animation:sobe .25s ease}
+/* hover só onde existe cursor */
+@media(hover:hover){
+.topo nav a:hover{color:var(--y)}
+.btn:hover{transform:translateY(-2px)}
+.btn:hover::before{transform:translateX(120%);transition:transform .6s ease}
+.btn.rosa:hover{box-shadow:6px 6px 0 var(--line)}.btn.rosa:hover::after{transform:translateX(5px)}
+.loja:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.loja.destaque:hover{box-shadow:0 0 0 3px var(--pd),0 10px 24px rgba(0,0,0,.18)}
+.loja:hover img{transform:scale(1.05)}}
+.btn.rosa:active{transform:translate(2px,2px)}
+@media(prefers-color-scheme:dark){.hero::before{opacity:.6}@media(hover:hover){.loja:hover{box-shadow:0 10px 24px rgba(255,105,180,.2)}.loja.destaque:hover{box-shadow:0 0 0 3px var(--pd),0 10px 24px rgba(255,105,180,.2)}}}
+.leve .hero::before{animation:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.hero::before{display:none}}
